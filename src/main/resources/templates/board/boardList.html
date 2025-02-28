@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.currentPaging	{ color: red; text-decoration: underline; }
+.paging { color: blue; text-decoration: none; }
+
+.subjectA { color: blue; text-decoration: none;}
+.subjectA:hover { color: green; text-decoration: underline;}
+</style>
+<!--/* 자바스크립트 내추럴 템플릿을 사용하기 위해서는 th:inline="javascript"을 사용한다. */-->
+<script type="text/javascript" th:inline="javascript">
+	function isLogin(seq){
+		var id = /*[[${memId}]]*/ "aa";		// 자바스크립트 내추럴 템플릿
+		//alert("id = " + id + ", seq = " + seq);
+		if(id == null) {
+			alert("먼저 로그인 해주세요.");
+		} else {
+			location.href = "boardView?seq=" + seq + "&pg=[[${pg}]]";
+		}
+	}
+</script>
+</head>
+<body>
+<div th:replace="~{layouts/header}"></div>	
+
+<div class="container">
+ 	<table class="table" style="width: 650px; margin: auto; margin-top: 10px;">
+		<tr class="table-warning" align="center">
+			<td width="100">글번호</td>
+			<td>제목</td>
+			<td width="100">작성자</td>
+			<td width="150">작성일</td>
+			<td width="70">조회수</td>
+		</tr>
+		<tr th:each="dto : ${list}" align="center" bgcolor="#ffffcc">	
+			<td>[[${dto.seq}]]</td>
+			<td><a class="subjectA" href="#" th:onclick="isLogin([[${dto.seq}]])">
+					[[${dto.subject}]]</a></td>
+			<td>[[${dto.name}]]</td>
+			<td>[[${dto.logtime}]]</td>
+			<td>[[${dto.hit}]]</td>
+		</tr>
+	
+		<tr>
+			<td colspan="5" align="center">	
+				<th:block th:if="${startPage > 3}">
+		    		[<a class="paging" th:href="@{boardList(pg=${startPage-1})}">이전</a>]
+		    	</th:block>
+		    	
+		    	<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+					<a th:class="${pg == i} ? currentPaging: paging" 
+					   th:href="@{boardList(pg=${i})}">[[${i}]]</a>
+				</th:block>		
+					
+<!--/*			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+					[<a th:if="${pg == i}" class="currentPaging" th:href="@{boardList(pg=${i})}">[[${i}]]</a>]
+					[<a th:if="${pg != i}" class="paging" th:href="@{boardList(pg=${i})}">[[${i}]]</a>]
+				</th:block>		
+ */-->			
+				<th:block th:if="${endPage < totalP}">
+		            [<a class="paging" th:href="@{boardList(pg=${endPage+1})}">다음</a>]
+		        </th:block>
+			</td>
+		</tr>
+	</table>	
+	<!-- http://localhost:8080/board/boardWriteForm -->
+	<a th:if="${memId != null}" href="boardWriteForm">새글쓰기</a>
+	<!-- http://localhost:8080/loginForm -->
+	<a th:if="${memId == null}" href="/loginForm">로그인</a>
+</div>
+
+<div th:replace="~{layouts/footer}"></div>	
+</body>
+</html>
