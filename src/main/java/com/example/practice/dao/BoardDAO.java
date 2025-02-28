@@ -52,4 +52,21 @@ public class BoardDAO {
 		}
 		return null;
 	}
+	
+	// 삭제하기
+	public boolean boardDelete(int seq) {
+		// 1. 기존 데이터 가져오기
+		Board board = boardRepository.findById(seq).orElse(null);
+		boolean result = false;
+		
+		if(board != null) {
+			// 2. 삭제 
+			boardRepository.delete(board); 
+	        // 3. 존재 검사
+			if(!boardRepository.existsById(seq)) {
+				result = true;
+	        }
+		}
+		return result;
+	}
 }

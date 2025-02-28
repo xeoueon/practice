@@ -117,4 +117,19 @@ public class BoardController {
 		// 3. view 처리 파일명 리턴
 		return "/board/boardView";
 	}
+	
+	@GetMapping("/board/boardDelete")
+	public String boardDelete(Model model, HttpServletRequest request) {
+		// 1. 데이터 처리
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		int pg = Integer.parseInt(request.getParameter("pg"));
+		// db
+		boolean result = dao.boardDelete(seq); 	
+		
+		// 2. 데이터 공유
+		model.addAttribute("pg", pg);
+		model.addAttribute("result", result);
+		// 3. view 처리 파일명 리턴
+		return "/board/boardDelete";
+	}
 }
