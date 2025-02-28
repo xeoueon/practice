@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function confirm_del(){
+		if(confirm("정말 삭제하시겠습니까?")) {
+			location.href = "boardDelete?seq=[[${seq}]]&pg=[[${pg}]]";
+		}
+	}
+</script>
+</head>
+<body>
+<div th:replace="~{layouts/header}"></div>	
+
+<div class="container">
+ 	<table class="table" style="width: 450px; margin: auto; margin-top: 10px;">
+ 		<tr>	
+ 			<td colspan="3" style="font-size: 1.5em; font-weight: bold;">
+ 				[[${board.subject}]]</td>
+ 		</tr>
+		<tr align="center">
+			<td width="150">글번호 : [[${board.seq}]]</td>
+			<td width="150">작성자 : [[${board.name}]]</td>
+			<td width="150">조회수 : [[${board.hit}]]</td>
+		</tr>
+		<tr>	
+			<td colspan="3" height="200" valign="top">
+				<pre>[[${board.content}]]</pre>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" align="left">
+				<input type="button" value="목록" 
+						th:onclick="location.href = 'boardList?pg=[[${pg}]]'">
+						
+			<th:block th:if="${memId == board.id}">
+				<input type="button" value="글수정" 
+					th:onclick="location.href = 'boardModifyForm?seq=[[${seq}]]&pg=[[${pg}]]'">
+				<input type="button" value="글삭제" onclick="confirm_del()">
+			</th:block>
+			</td>
+		</tr>
+		
+	</table>
+</div>
+
+<div th:replace="~{layouts/footer}"></div>	
+</body>
+</html>

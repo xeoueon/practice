@@ -33,4 +33,23 @@ public class BoardDAO {
 		// 저장 및 리턴
 		return boardRepository.save(board);
 	}	
+	
+	// 상세보기
+	public Board boardView(int seq) {
+		return boardRepository.findById(seq).orElse(null);
+	}
+	
+	// 조회수 증가
+	public Board updateHit(int seq) {
+		// 1. 기존 데이터 가져오기
+		Board board = boardRepository.findById(seq).orElse(null);
+		
+		if(board != null) {
+			// 2. 수정 : 조회수 증가
+			board.setHit(board.getHit() + 1);
+			// 3. 저장
+			return boardRepository.save(board);
+		}
+		return null;
+	}
 }

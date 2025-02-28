@@ -97,4 +97,24 @@ public class BoardController {
 		// 3. view 처리 파일명 리턴
 		return "board/boardWrite";  
 	}	
+	
+	@GetMapping("/board/boardView")
+	public String boardView(Model model, HttpServletRequest request) {
+		// 1. 데이터 처리
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		int pg = Integer.parseInt(request.getParameter("pg"));
+		
+		dao.updateHit(seq);					// 조회수 증가
+		Board board = dao.boardView(seq); 	// 1줄 데이터 가져오기
+		
+		// 2. 데이터 공유
+		model.addAttribute("seq", seq);
+		model.addAttribute("pg", pg);
+		model.addAttribute("board", board);
+		// 글쓴이 인지 확인하기 위해서 id도 공유시킨다.
+		HttpSession session = request.getSession();
+		model.addAttribute("memId", session.getAttribute("memId"));
+		// 3. view 처리 파일명 리턴
+		return "/board/boardView";
+	}
 }
