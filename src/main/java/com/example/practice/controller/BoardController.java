@@ -1,13 +1,17 @@
 package com.example.practice.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.practice.dao.BoardDAO;
+import com.example.practice.dto.BoardDTO;
 import com.example.practice.entity.Board;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,5 +65,36 @@ public class BoardController {
 		return "/board/boardList"; // /board/boardList.html
 	}
 
+	@GetMapping("/board/boardWriteForm")
+	public String boardWriteForm() {
+		// 1. 데이터 처리
+		// 2. 데이터 공유
+		// 3. view 처리 파일명 리턴
+		return "/board/boardWriteForm";
+	}
 	
+	@PostMapping("/board/boardWrite")
+	public String boardWrite(Model model, BoardDTO dto, HttpServletRequest request) {
+		// 1. 데이터 처리
+		// 한글 인코딩 설정
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		HttpSession session = request.getSession();
+		dto.setId((String) session.getAttribute("memId"));
+		dto.setName((String) session.getAttribute("memName"));
+		dto.setLogtime(new Date());
+		
+		System.out.println(dto.toString());
+		// db
+		Board board = dao.boardWrite(dto);
+		System.out.println(board.toString());
+		
+		// 2. 데이터 공유
+		model.addAttribute("board", board);
+		// 3. view 처리 파일명 리턴
+		return "board/boardWrite";  
+	}	
 }

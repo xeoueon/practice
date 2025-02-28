@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:replace="~{layouts/header}"></div>	
+
+	<p th:if="${board != null}">데이터가 저장되었습니다.</p>
+	<p th:if="${board == null}">데이터가 저장에 실패하였습니다.</p>
+	<br><br>
+	
+	<a href="/board/boardList">목록보기</a>
+	
+<div th:replace="~{layouts/footer}"></div>	
+</body>
+</html>
