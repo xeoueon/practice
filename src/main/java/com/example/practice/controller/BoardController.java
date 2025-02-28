@@ -132,4 +132,37 @@ public class BoardController {
 		// 3. view 처리 파일명 리턴
 		return "/board/boardDelete";
 	}
+	
+	@GetMapping("/board/boardModifyForm")
+	public String boardModifyForm(Model model, HttpServletRequest request) {
+		// 1. 데이터 처리
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		int pg = Integer.parseInt(request.getParameter("pg"));
+		// db
+		Board board = dao.boardView(seq); 
+		
+		// 2. 데이터 공유
+		model.addAttribute("seq", seq);
+		model.addAttribute("pg", pg);
+		model.addAttribute("board", board);
+		// 3. view 처리 파일명 리턴
+		return "/board/boardModifyForm";
+	}
+	
+	@PostMapping("/board/boardModify")
+	public String boardModify(Model model, BoardDTO dto, HttpServletRequest request) {
+		// 1. 데이터 처리
+		int pg = Integer.parseInt(request.getParameter("pg"));
+		
+		System.out.println(dto.toString());
+		// db
+		boolean result = dao.boardModify(dto);
+		
+		// 2. 데이터 공유
+		model.addAttribute("seq", dto.getSeq());
+		model.addAttribute("pg", pg);
+		model.addAttribute("result", result);
+		// 3. view 처리 파일명 리턴
+		return "board/boardModify";  
+	}
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" th:inline="javascript">
+	window.onload = function(){		// 백색화면 문제
+		setTimeout(function() {
+			var result = /*[[${result}]]*/ false;
+			//alert("result = " + result);
+			if(result != null) {
+				alert("수정 성공");
+				location.href = "boardView?seq=[[${seq}]]&pg=[[${pg}]]";
+			} else {
+				alert("수정 실패");
+				history.back();
+			}
+		}, 100);
+	}
+</script>
+</head>
+<body>
+<div th:replace="~{layouts/header}"></div>	
+
+	
+<div th:replace="~{layouts/footer}"></div>	
+</body>
+</html>

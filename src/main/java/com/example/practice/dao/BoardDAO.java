@@ -1,5 +1,6 @@
 package com.example.practice.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,26 @@ public class BoardDAO {
 			if(!boardRepository.existsById(seq)) {
 				result = true;
 	        }
+		}
+		return result;
+	}
+	
+	// 수정하기
+	public boolean boardModify(BoardDTO dto) {
+		// 1. 기존 데이터 가져오기
+		Board board = boardRepository.findById(dto.getSeq()).orElse(null);
+		boolean result = false;
+		if(board != null) { 	// 데이터가 존재하면
+			// 2. 수정
+			board.setLogtime(dto.getLogtime());			// 기존 등록일 유지
+			board.setLogtime(new Date());				// 수정일 저장
+			board.setSubject(dto.getSubject());
+			board.setContent(dto.getContent());
+			// 3. 저장
+			Board board_result = boardRepository.save(board);
+			if(board_result != null) {
+				result = true;
+			}
 		}
 		return result;
 	}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/boardScript.js"></script>
+</head>
+<body>
+<div th:replace="~{layouts/header}"></div>	
+
+	<div class="container mt-5">
+		<form action="boardModify" name="form1" method="post">
+			<input type="hidden" name="pg" th:value="${pg}">
+			<input type="hidden" name="seq" th:value="${seq}">
+			<table class="table" style="width: 400px; margin: auto;">
+				<tr align="center">
+					<td width="60">제목</td>
+					<td><input type="text" name="subject" style="width: 100%" th:value="${board.subject}"></td>
+				</tr>
+				<tr align="center">
+					<td>내용</td>
+					<td><textarea rows="10" name="content" style="width: 100%">[[${board.content}]]</textarea></td>
+				</tr>
+				<tr align="center">
+					<td colspan="2">
+						<input type="button" value="글수정" th:onclick="checkBoardModify()"> 
+						<input type="reset" value="다시작성">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	
+<div th:replace="~{layouts/footer}"></div>	
+</body>
+</html>
